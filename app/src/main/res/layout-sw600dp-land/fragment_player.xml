@@ -1,0 +1,126 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.udacity.spotifystreamer.view.ui.PlayerFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="100"
+        android:orientation="vertical"
+        android:background="@android:color/white">
+
+        <TextView android:text="Artist"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/textViewArtist"
+            android:textSize="28sp"
+            android:textIsSelectable="false" />
+
+        <TextView android:text="Album"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/textViewAlbum"
+            android:textSize="28sp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/imageViewAlbum"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="50"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp" />
+
+        <TextView android:text="Track"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/textViewTrack"
+            android:textSize="28sp" />
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            android:layout_gravity="right"
+            android:layout_weight="5"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:indeterminate="false" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_weight="5">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0:00"
+                android:id="@+id/textViewStart"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="false"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentStart="false"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="60dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0:00"
+                android:id="@+id/textViewEnd"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="60dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="10"
+            android:weightSum="3"
+            android:layout_marginRight="150dp"
+            android:layout_marginLeft="150dp">
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/imageButtonPrevious"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:src="@android:drawable/ic_media_previous" />
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/imageButtonPlayPause"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:src="@android:drawable/ic_media_play" />
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/imageButtonNext"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:src="@android:drawable/ic_media_next" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

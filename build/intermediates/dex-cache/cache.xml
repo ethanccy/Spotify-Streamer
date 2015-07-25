@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/ethan_yu/SpotifyStreamer/app/build/intermediates/exploded-aar/spotify-web-api-android-0.1.0/jars/libs/jacocoagent.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="ea73283d55c98ab1fccb8c23d76c68b7d7ecbd83">
+        <dex dex="/Users/ethan_yu/SpotifyStreamer/app/build/intermediates/pre-dexed/debug/jacocoagent-beceedd2611a3267e6aab9aeb10afd13ed345489.jar" />
+    </item>
+    <item
+        jar="/Users/ethan_yu/SpotifyStreamer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="a3ff3c506644c820eb2bdf06e8339f72be578551">
+        <dex dex="/Users/ethan_yu/SpotifyStreamer/app/build/intermediates/pre-dexed/debug/classes-626f48ab36ff166197293d611492abb49bcad416.jar" />
+    </item>
+    <item
+        jar="/Users/ethan_yu/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.1.1/support-annotations-22.1.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="01d051a6bfb1218b1db2d3a5af0480ac2c25c42a">
+        <dex dex="/Users/ethan_yu/SpotifyStreamer/app/build/intermediates/pre-dexed/debug/support-annotations-22.1.1-f1e6920b649ca39958c9f16a048b86bd9358b340.jar" />
+    </item>
+    <item
+        jar="/Users/ethan_yu/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.2.0/959c454243581fdf730abfd4f4745441724bcf2c/okhttp-2.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="959c454243581fdf730abfd4f4745441724bcf2c">
+        <dex dex="/Users/ethan_yu/SpotifyStreamer/app/build/intermediates/pre-dexed/debug/okhttp-2.2.0-51ea8451e56d932e955e227b9e38b93ab9d67042.jar" />
+    </item>
+    <item
+        jar="/Users/ethan_yu/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.2.0/c0b52915a48fa91b1b94a28d4a2997bac5f524df/okio-1.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c0b52915a48fa91b1b94a28d4a2997bac5f524df">
+        <dex dex="/Users/ethan_yu/SpotifyStreamer/app/build/intermediates/pre-dexed/debug/okio-1.2.0-4aab388490d8b2c79377a9101bf255654b1fa4dd.jar" />
+    </item>
+    <item
+        jar="/Users/ethan_yu/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.2/7446d06ec8d4f7ffcc53f1da37c95f200dcb9387/picasso-2.5.2.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="/Users/ethan_yu/SpotifyStreamer/app/build/intermediates/pre-dexed/debug/picasso-2.5.2-97d258c76967f21101f7ae008873a45594af8b06.jar" />
+    </item>
+    <item
+        jar="/Users/ethan_yu/SpotifyStreamer/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c95ba8152923e4872e86a82cfcba9a51c0214328">
+        <dex dex="/Users/ethan_yu/SpotifyStreamer/app/build/intermediates/pre-dexed/debug/classes-19f8fe07006dc67514d4c20575b24f77113b399c.jar" />
+    </item>
+    <item
+        jar="/Users/ethan_yu/SpotifyStreamer/app/build/intermediates/exploded-aar/spotify-web-api-android-0.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="179000e63501e0baeffae191e1d7c37cc8de01cd">
+        <dex dex="/Users/ethan_yu/SpotifyStreamer/app/build/intermediates/pre-dexed/debug/classes-a33e72b60f3a4e71b2d93e75f5daf35d4ae384cc.jar" />
+    </item>
+    <item
+        jar="/Users/ethan_yu/SpotifyStreamer/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/libs/internal_impl-22.1.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="9e070ad32b2700b0343e8e0cccc437733d91ba3a">
+        <dex dex="/Users/ethan_yu/SpotifyStreamer/app/build/intermediates/pre-dexed/debug/internal_impl-22.1.1-032a634d9a740a4fc5b4f70f74a8a63126439ddc.jar" />
+    </item>
+    <item
+        jar="/Users/ethan_yu/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit/retrofit/1.9.0/a681c044244d9fc375198588297a39ba78028423/retrofit-1.9.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="a681c044244d9fc375198588297a39ba78028423">
+        <dex dex="/Users/ethan_yu/SpotifyStreamer/app/build/intermediates/pre-dexed/debug/retrofit-1.9.0-465147946855168ea7152c418626a804feb3a945.jar" />
+    </item>
+    <item
+        jar="/Users/ethan_yu/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.3.1/ecb6e1f8e4b0e84c4b886c2f14a1500caf309757/gson-2.3.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
+        <dex dex="/Users/ethan_yu/SpotifyStreamer/app/build/intermediates/pre-dexed/debug/gson-2.3.1-d96785c1c58f71408ef7b54e915df3516d0a5f0f.jar" />
+    </item>
+
+</items>
