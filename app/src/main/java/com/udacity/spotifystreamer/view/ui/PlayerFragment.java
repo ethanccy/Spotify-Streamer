@@ -231,13 +231,19 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
 
         progressBar.setMax((int) (mTracks.get(mPosition).getDuration_ms() / 1000));
 
-        int minute = (int)(progressBar.getMax() / 60);
+        textViewEnd.setText(getEndTimeString(progressBar.getMax()));
+    }
+
+    private String getEndTimeString(int seconds) {
+
+        int minute = seconds / 60;
+
         StringBuffer sb = new StringBuffer();
         sb.append(minute)
                 .append(":")
-                .append(progressBar.getMax() - minute * 60);
+                .append(seconds - minute * 60);
 
-        textViewEnd.setText(sb.toString());
+        return sb.toString();
     }
 
     private void updateCurrentTrack(TrackParcelable track) {
@@ -250,13 +256,7 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
 
         progressBar.setMax((int) (mTracks.get(mPosition).getDuration_ms() / 1000));
 
-        int minute = (int)(progressBar.getMax() / 60);
-        StringBuffer sb = new StringBuffer();
-        sb.append(minute)
-                .append(":")
-                .append(progressBar.getMax() - minute * 60);
-
-        textViewEnd.setText(sb.toString());
+        textViewEnd.setText(getEndTimeString(progressBar.getMax()));
     }
 
     // TODO: Rename method, update argument and hook method into UI event
