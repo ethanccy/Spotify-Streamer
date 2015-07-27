@@ -8,13 +8,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -33,6 +35,9 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPreparedListener {
+
+    final static String TAG = PlayerFragment.class.getName();
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String POSITION = "position";
@@ -52,7 +57,7 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
     private ImageButton imageButtonPrevious;
     private ImageButton imageButtonPlayPause;
     private ImageButton imageButtonNext;
-    private ProgressBar progressBar;
+    private SeekBar seekBar;
 
     private MediaPlayer player;
     private boolean isPrepared = false;
@@ -61,8 +66,8 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
     private Runnable runnable = new Runnable(){
         public void run() {
 
-            int curProgress = progressBar.getProgress();
-            progressBar.setProgress(curProgress + 1);
+            int curProgress = seekBar.getProgress();
+            seekBar.setProgress(curProgress + 1);
             handler.postDelayed(this, 1000);
         }
     };
@@ -131,7 +136,9 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
         textViewTrack = (TextView)rootView.findViewById(R.id.textViewTrack);
         textViewEnd  = (TextView)rootView.findViewById(R.id.textViewEnd);
         imageViewAlbum = (ImageView)rootView.findViewById(R.id.imageViewAlbum);
-        progressBar = (ProgressBar)rootView.findViewById(R.id.progressBar);
+        seekBar = (SeekBar)rootView.findViewById(R.id.seekBar);
+
+        Log.d(TAG, "seekBar: " + seekBar);
 
         if (mTracks != null) {
 
@@ -165,7 +172,7 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
 
                 player.reset();
 
-                progressBar.setProgress(0);
+                seekBar.setProgress(0);
                 handler.removeCallbacks(runnable);
 
                 try {
@@ -217,7 +224,7 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
 
                 player.reset();
 
-                progressBar.setProgress(0);
+                seekBar.setProgress(0);
                 handler.removeCallbacks(runnable);
 
                 try {
@@ -229,9 +236,29 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
             }
         });
 
-        progressBar.setMax((int) (mTracks.get(mPosition).getDuration_ms() / 1000));
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        textViewEnd.setText(getEndTimeString(progressBar.getMax()));
+                if (fromUser) {
+                    player.seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        seekBar.setMax((int) (mTracks.get(mPosition).getDuration_ms() / 1000));
+
+        textViewEnd.setText(getEndTimeString(seekBar.getMax()));
     }
 
     private String getEndTimeString(int seconds) {
@@ -254,9 +281,9 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
         if (track.getImageUrl() != null)
             Picasso.with(getActivity()).load(track.getImageUrl()).into(imageViewAlbum);
 
-        progressBar.setMax((int) (mTracks.get(mPosition).getDuration_ms() / 1000));
+        seekBar.setMax((int) (mTracks.get(mPosition).getDuration_ms() / 1000));
 
-        textViewEnd.setText(getEndTimeString(progressBar.getMax()));
+        textViewEnd.setText(getEndTimeString(seekBar.getMax()));
     }
 
     // TODO: Rename method, update argument and hook method into UI event
