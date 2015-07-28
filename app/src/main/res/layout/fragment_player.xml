@@ -1,9 +1,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.udacity.spotifystreamer.view.ui.PlayerFragment">
 
     <LinearLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="100"
@@ -46,16 +48,13 @@
             android:id="@+id/textViewTrack"
             android:textSize="20sp" />
 
-        <ProgressBar
-            style="?android:attr/progressBarStyleHorizontal"
+        <SeekBar
+            android:id="@+id/seekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/progressBar"
-            android:layout_gravity="right"
             android:layout_weight="5"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:indeterminate="false" />
+            android:layout_marginRight="10dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
