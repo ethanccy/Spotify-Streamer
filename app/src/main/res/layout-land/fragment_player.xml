@@ -1,9 +1,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.udacity.spotifystreamer.view.ui.PlayerFragment">
 
     <LinearLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:weightSum="100"
@@ -13,52 +15,53 @@
         <TextView android:text="Artist"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="9"
+            android:layout_weight="10"
             android:textColor="@android:color/black"
             android:layout_gravity="center_horizontal"
             android:id="@+id/textViewArtist"
-            android:textSize="28sp"
-            android:textIsSelectable="false" />
+            android:textSize="14sp" />
 
         <TextView android:text="Album"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="8"
+            android:layout_weight="10"
             android:textColor="@android:color/black"
             android:layout_gravity="center_horizontal"
             android:id="@+id/textViewAlbum"
-            android:textSize="28sp" />
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:id="@+id/imageViewAlbum"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="40"
+            android:layout_weight="30"
             android:layout_marginLeft="100dp"
             android:layout_marginRight="100dp" />
 
         <TextView android:text="Track"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="8"
+            android:layout_weight="10"
             android:textColor="@android:color/black"
             android:layout_gravity="center_horizontal"
             android:id="@+id/textViewTrack"
-            android:textSize="28sp" />
+            android:textSize="14sp" />
 
         <SeekBar
             android:id="@+id/seekBar"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="10"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp" />
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="right"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
             android:layout_weight="5">
 
             <TextView
@@ -71,8 +74,8 @@
                 android:layout_alignParentEnd="false"
                 android:layout_alignParentStart="false"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="60dp"
-                android:textSize="22sp" />
+                android:layout_marginLeft="10dp"
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -81,8 +84,8 @@
                 android:id="@+id/textViewEnd"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="60dp"
-                android:textSize="22sp" />
+                android:layout_marginRight="10dp"
+                android:textSize="12sp" />
         </RelativeLayout>
 
         <LinearLayout
@@ -90,10 +93,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="20"
-            android:weightSum="3"
+            android:layout_weight="25"
+            android:layout_marginLeft="150dp"
             android:layout_marginRight="150dp"
-            android:layout_marginLeft="150dp">
+            android:weightSum="3">
 
             <ImageButton
                 android:layout_width="0dp"

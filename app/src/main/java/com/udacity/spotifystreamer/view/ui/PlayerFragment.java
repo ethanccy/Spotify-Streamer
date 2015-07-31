@@ -2,28 +2,24 @@ package com.udacity.spotifystreamer.view.ui;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.udacity.spotifystreamer.R;
 import com.udacity.spotifystreamer.model.TrackParcelable;
+import com.udacity.spotifystreamer.utils.ParcelableCommandMediaService;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -34,16 +30,21 @@ import java.util.ArrayList;
  * Use the {@link PlayerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPreparedListener {
+public class PlayerFragment extends DialogFragment {
 
     final static String TAG = PlayerFragment.class.getName();
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String POSITION = "position";
     private static final String TRACKS = "tracks";
 
-    // TODO: Rename and change types of parameters
+    public static final String ACTION_MEDIAPLAYER_PLAY = "play";
+    public static final String ACTION_MEDIAPLAYER_RESUME = "resume";
+    public static final String ACTION_MEDIAPLAYER_PAUSE = "pause";
+    public static final String ACTION_MEDIAPLAYER_STOP = "stop";
+    public static final String ACTION_MEDIAPLAYER_NEXT = "next";
+    public static final String ACTION_MEDIAPLAYER_PREVIOUS = "previous";
+    public static final String ACTION_MEDIAPLAYER_SEEK_TO = "seek_to";
+
     private int mPosition;
     private ArrayList<TrackParcelable> mTracks;
 
@@ -59,16 +60,31 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
     private ImageButton imageButtonNext;
     private SeekBar seekBar;
 
-    private MediaPlayer player;
-    private boolean isPrepared = false;
+    private boolean mSongPlaying;
+    private int mSeekTo;
+
+    private ParcelableCommandMediaService parcelableCommandMediaService;
 
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable(){
         public void run() {
 
             int curProgress = seekBar.getProgress();
-            seekBar.setProgress(curProgress + 1);
-            handler.postDelayed(this, 1000);
+            if (curProgress < seekBar.getMax()) {
+                seekBar.setProgress(curProgress + 1);
+                handler.postDelayed(this, 1000);
+            } else {
+                mSongPlaying = false;
+                seekBar.setProgress(0);
+                imageButtonPlayPause.setImageResource(android.R.drawable.ic_media_play);
+                parcelableCommandMediaService.execute(
+                        getActivity(),
+                        ParcelableCommandMediaService.makeArgs(
+                                ACTION_MEDIAPLAYER_STOP,
+                                Uri.parse(mTracks.get(mPosition).getPreviewUrl()),
+                                0)
+                );
+            }
         }
     };
 
@@ -80,7 +96,6 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
      * @param tracks Parameter 2.
      * @return A new instance of fragment PlayerFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static PlayerFragment newInstance(int position, ArrayList<TrackParcelable> tracks) {
         PlayerFragment fragment = new PlayerFragment();
         Bundle args = new Bundle();
@@ -120,9 +135,13 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
             }
         } else {
 
+            mSongPlaying = savedInstanceState.getBoolean("SongPlaying");
             mPosition = savedInstanceState.getInt("Position");
             mTracks = savedInstanceState.getParcelableArrayList("Tracks");
+            mSeekTo = savedInstanceState.getInt("SeekTo");
         }
+
+        parcelableCommandMediaService = new ParcelableCommandMediaService();
 
         initializeView(rootView);
 
@@ -138,22 +157,9 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
         imageViewAlbum = (ImageView)rootView.findViewById(R.id.imageViewAlbum);
         seekBar = (SeekBar)rootView.findViewById(R.id.seekBar);
 
-        Log.d(TAG, "seekBar: " + seekBar);
-
         if (mTracks != null) {
 
             updateCurrentTrack(mTracks.get(mPosition));
-        }
-
-        try {
-            player = new MediaPlayer();
-            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            player.setDataSource(mTracks.get(mPosition).getPreviewUrl());
-            player.setOnPreparedListener(this);
-            player.prepareAsync();
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         imageButtonPrevious = (ImageButton)rootView.findViewById(R.id.imageButtonPrevious);
@@ -161,50 +167,72 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
             @Override
             public void onClick(View view) {
 
-                if (mPosition > 0)
-                    mPosition--;
-                else
-                    return;
+                mPosition  = (--mPosition + mTracks.size()) % mTracks.size();
 
                 updateCurrentTrack(mTracks.get(mPosition));
 
-                imageButtonPlayPause.setImageResource(android.R.drawable.ic_media_play);
-
-                player.reset();
+                parcelableCommandMediaService.execute(
+                        getActivity(),
+                        ParcelableCommandMediaService.makeArgs(
+                                ACTION_MEDIAPLAYER_PREVIOUS,
+                                Uri.parse(mTracks.get(mPosition).getPreviewUrl()),
+                                0)
+                );
 
                 seekBar.setProgress(0);
-                handler.removeCallbacks(runnable);
-
-                try {
-                    player.setDataSource(mTracks.get(mPosition).getPreviewUrl());
-                    player.prepareAsync();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                imageButtonPlayPause.setImageResource(android.R.drawable.ic_media_pause);
+                mSongPlaying = true;
             }
         });
 
         imageButtonPlayPause = (ImageButton)rootView.findViewById(R.id.imageButtonPlayPause);
+        if (mSongPlaying)
+            imageButtonPlayPause.setImageResource(android.R.drawable.ic_media_pause);
+
         imageButtonPlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (player.isPlaying()) {
-
-                    player.pause();
+                if (mSongPlaying) {
+                    parcelableCommandMediaService.execute(
+                            getActivity(),
+                            ParcelableCommandMediaService.makeArgs(
+                                    ACTION_MEDIAPLAYER_PAUSE,
+                                    null,
+                                    0)
+                    );
 
                     imageButtonPlayPause.setImageResource(android.R.drawable.ic_media_play);
 
                     handler.removeCallbacks(runnable);
 
                 } else {
+                    if (seekBar.getProgress() == 0) {
 
-                    player.start();
+                        parcelableCommandMediaService.execute(
+                                getActivity(),
+                                ParcelableCommandMediaService.makeArgs(
+                                        ACTION_MEDIAPLAYER_PLAY,
+                                        Uri.parse(mTracks.get(mPosition).getPreviewUrl()),
+                                        0)
+                        );
+
+                    } else {
+
+                        parcelableCommandMediaService.execute(
+                                getActivity(),
+                                ParcelableCommandMediaService.makeArgs(
+                                        ACTION_MEDIAPLAYER_RESUME,
+                                        Uri.parse(mTracks.get(mPosition).getPreviewUrl()),
+                                        0)
+                        );
+                    }
 
                     imageButtonPlayPause.setImageResource(android.R.drawable.ic_media_pause);
 
                     handler.postDelayed(runnable, 1000);
                 }
+                mSongPlaying = !mSongPlaying;
             }
         });
 
@@ -213,26 +241,21 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
             @Override
             public void onClick(View view) {
 
-                if (mPosition < mTracks.size() - 1)
-                    mPosition++;
-                else
-                    return;
+                mPosition = ++mPosition % mTracks.size();
 
                 updateCurrentTrack(mTracks.get(mPosition));
 
-                imageButtonPlayPause.setImageResource(android.R.drawable.ic_media_play);
-
-                player.reset();
+                parcelableCommandMediaService.execute(
+                        getActivity(),
+                        ParcelableCommandMediaService.makeArgs(
+                                ACTION_MEDIAPLAYER_NEXT,
+                                Uri.parse(mTracks.get(mPosition).getPreviewUrl()),
+                                0)
+                );
 
                 seekBar.setProgress(0);
-                handler.removeCallbacks(runnable);
-
-                try {
-                    player.setDataSource(mTracks.get(mPosition).getPreviewUrl());
-                    player.prepareAsync();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                imageButtonPlayPause.setImageResource(android.R.drawable.ic_media_pause);
+                mSongPlaying = true;
             }
         });
 
@@ -241,7 +264,15 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
                 if (fromUser) {
-                    player.seekTo(progress);
+                    parcelableCommandMediaService.execute(
+                            getActivity(),
+                            ParcelableCommandMediaService.makeArgs(
+                                    ACTION_MEDIAPLAYER_SEEK_TO,
+                                    Uri.parse(mTracks.get(mPosition).getPreviewUrl()),
+                                    progress)
+                    );
+                    imageButtonPlayPause.setImageResource(android.R.drawable.ic_media_pause);
+                    mSongPlaying = true;
                 }
             }
 
@@ -259,6 +290,22 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
         seekBar.setMax((int) (mTracks.get(mPosition).getDuration_ms() / 1000));
 
         textViewEnd.setText(getEndTimeString(seekBar.getMax()));
+
+        if (mSeekTo > 0) {
+
+            seekBar.setProgress(mSeekTo);
+            parcelableCommandMediaService.execute(
+                    getActivity(),
+                    ParcelableCommandMediaService.makeArgs(
+                            ACTION_MEDIAPLAYER_SEEK_TO,
+                            Uri.parse(mTracks.get(mPosition).getPreviewUrl()),
+                            mSeekTo)
+            );
+
+            imageButtonPlayPause.setImageResource(android.R.drawable.ic_media_pause);
+
+            handler.postDelayed(runnable, 1000);
+        }
     }
 
     private String getEndTimeString(int seconds) {
@@ -268,7 +315,8 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
         StringBuffer sb = new StringBuffer();
         sb.append(minute)
                 .append(":")
-                .append(seconds - minute * 60);
+                .append(
+                        (seconds - minute * 60) > 9 ? (seconds - minute * 60) : "0" + (seconds - minute * 60));
 
         return sb.toString();
     }
@@ -326,29 +374,20 @@ public class PlayerFragment extends DialogFragment implements MediaPlayer.OnPrep
     }
 
     @Override
-    public void onStop() {
+    public void onDestroy() {
 
-        player.release();
-        player = null;
+        parcelableCommandMediaService.unexecute(getActivity());
 
-        super.onStop();
-    }
-
-    @Override
-    public void onPrepared(MediaPlayer mediaPlayer) {
-
-        player.start();
-
-        imageButtonPlayPause.setImageResource(android.R.drawable.ic_media_pause);
-
-        handler.postDelayed(runnable, 1000);
+        super.onDestroy();
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
 
+        savedInstanceState.putBoolean("SongPlaying", mSongPlaying);
         savedInstanceState.putInt("Position", mPosition);
         savedInstanceState.putParcelableArrayList("Tracks", mTracks);
+        savedInstanceState.putInt("SeekTo", seekBar.getProgress());
 
         super.onSaveInstanceState(savedInstanceState);
     }

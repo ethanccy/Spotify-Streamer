@@ -24,7 +24,7 @@
         <activity
             android:name=".view.TrackActivity"
             android:label="@string/title_activity_track"
-            android:parentActivityName=".view.MainActivity">
+            android:parentActivityName=".view.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".view.MainActivity" />
@@ -33,6 +33,12 @@
             android:name=".view.PlayerActivity"
             android:label="@string/title_activity_player" >
         </activity>
+
+        <service
+            android:name=".services.MediaService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>
