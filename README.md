@@ -6,6 +6,7 @@ Main features :
 - Music player using Android MediaPlayer.
 - Play music in background.
 - Master-Detail Structure UI flow for tablet using Fragments.
+- Image downloading and caching using Picasso open source library.
 
 Used Libraries :
 
